@@ -1,18 +1,25 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import UserNavbar from "./UserNavbar";
 
-import userSVG from "../assets/user.svg";
+import plusSVG from "../assets/plus.svg";
 
 const Navbar = () => {
   return (
     <>
-      <div className="grid grid-cols-2 w-full pt-4 items-center bg-blue-500 pb-4 fixed top-0">
-        <div className="cursor-pointer">
+      <div className="grid grid-cols-2 w-full pt-4 items-center bg-blue-500 pb-4 fixed top-0 font-serif select-none">
+        <Link to="/" className="cursor-pointer">
           <h1 className="text-5xl ml-24 text-white">University</h1>
-        </div>
-        <div className="flex justify-self-end mr-24 items-center cursor-pointer">
-          <img className="h-10 mr-2" src={userSVG} alt="error" />
-          <h5 className="text-white text-lg">Name</h5>
+        </Link>
+        <div className="flex justify-self-end">
+          <Link
+            to="/create_subject"
+            className="flex items-center mr-8 hover:bg-blue-400 px-2 cursor-pointer rounded-md "
+          >
+            <img className="h-8" src={plusSVG} alt="error" />
+            <h5 className="text-white">New subject</h5>
+          </Link>
+          <UserNavbar />
         </div>
       </div>
       <Outlet />

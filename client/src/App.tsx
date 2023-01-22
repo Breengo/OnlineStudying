@@ -1,12 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import AuthPage from "./pages/AuthPage";
 import MainPage from "./pages/MainPage";
+import SubjectPage from "./pages/SubjectPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import { RootState } from "./redux/store";
+import SubjectCreationPage from "./pages/SubjectCreationPage";
 
 function App() {
-  const isAuth = true;
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   return (
     <div className="App w-full">
       <Routes>
@@ -15,11 +19,15 @@ function App() {
             element={<ProtectedRoute isAllowed={isAuth} redirect={"/auth"} />}
           >
             <Route path="/" element={<MainPage />} />
+            <Route path="/subject/:id" element={<SubjectPage />} />
           </Route>
           <Route
             element={<ProtectedRoute isAllowed={!isAuth} redirect={"/"} />}
           >
             <Route path="/auth" element={<AuthPage />} />
+          </Route>
+          <Route element={<ProtectedRoute isAllowed={isAuth} redirect={"/"} />}>
+            <Route path="/create_subject" element={<SubjectCreationPage />} />
           </Route>
         </Route>
       </Routes>
