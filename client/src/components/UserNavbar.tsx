@@ -12,11 +12,13 @@ const UserNavbar = () => {
   const [showMenu, setShowMenu] = React.useState(false);
   return (
     <div
-      className="flex mr-24 items-center cursor-pointer relative hover:bg-blue-400 p-2 rounded-md select-none"
+      className="flex mr-24 items-center  relative rounded-md select-none"
       onClick={() => setShowMenu(!showMenu)}
     >
-      <img className="h-10 mr-2" src={userSVG} alt="error" />
-      <h5 className="text-white text-xl">Mikhail Varganov</h5>
+      <div className="flex p-2 items-center cursor-pointer hover:bg-blue-400 rounded-md">
+        <img className="h-10 mr-2" src={userSVG} alt="error" />
+        <h5 className="text-white text-xl">Mikhail Varganov</h5>
+      </div>
       <div
         onClick={(e) => logoutHandler(e)}
         className={
@@ -24,7 +26,7 @@ const UserNavbar = () => {
           (showMenu ? " visible" : " hidden")
         }
       >
-        <h6 className="hover:bg-blue-400 hover:text-white px-4 py-2 rounded-md">
+        <h6 className="hover:bg-blue-400 hover:text-white cursor-pointer px-4 py-2 rounded-md">
           Logout
         </h6>
       </div>

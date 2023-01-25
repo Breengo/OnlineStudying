@@ -2,26 +2,48 @@ import React from "react";
 
 interface ISelector {
   selectList: string[];
-  selectorRef: React.RefObject<HTMLButtonElement>;
-  secondSelectorRef: React.RefObject<HTMLButtonElement>;
   selectorTitle: string;
+  allowedNumber?: number;
   setChoiced: (choiced: string[]) => void;
   choiced: string[];
 }
 
 const Selector: React.FC<ISelector> = ({
   selectList,
-  selectorRef,
-  secondSelectorRef,
+  allowedNumber,
   selectorTitle,
   setChoiced,
   choiced,
 }) => {
   const [showSelector, setShowSelector] = React.useState(false);
+  const selectorRef = React.useRef<HTMLUListElement>(null);
+  const isOpened = React.useRef(false);
+
+  function assertIsNode(e: EventTarget | null): asserts e is Node {
+    if (!e || !("nodeType" in e)) {
+      throw new Error(`Node expected`);
+    }
+  }
+
+  const listener = React.useCallback((e: MouseEvent) => {
+    assertIsNode(e.target);
+    if (
+      isOpened.current &&
+      !selectorRef.current?.contains(e.target) &&
+      e.target !== selectorRef.current
+    ) {
+      setShowSelector(false);
+      isOpened.current = false;
+      window.removeEventListener("click", listener);
+    }
+    isOpened.current = true;
+  }, []);
 
   const handleChoice = (select: string) => {
     if (choiced.indexOf(select) === -1) {
-      setChoiced([...choiced, select]);
+      if (!allowedNumber || allowedNumber > choiced.length) {
+        setChoiced([...choiced, select]);
+      }
     } else {
       const tempArr = choiced.slice(0);
       tempArr.splice(choiced.indexOf(select), 1);
@@ -31,16 +53,8 @@ const Selector: React.FC<ISelector> = ({
 
   const selectHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    const listener = (e: MouseEvent) => {
-      if (
-        (showSelector && e.target === selectorRef.current) ||
-        e.target === secondSelectorRef.current
-      ) {
-        setShowSelector(false);
-        window.removeEventListener("click", listener);
-      }
-    };
-    setShowSelector(true);
+    setShowSelector(!showSelector);
+    isOpened.current = false;
     window.addEventListener("click", listener);
   };
 
@@ -49,7 +63,6 @@ const Selector: React.FC<ISelector> = ({
       <label className="mr-4 w-4/12">{selectorTitle}</label>
       <div className="relative w-full">
         <button
-          ref={selectorRef}
           onClick={selectHandler}
           className={
             "outline-none bg-transparent border-2  w-full p-2 text-xl border-blue-600 border-2 hover:bg-blue-600 hover:text-white" +
@@ -58,10 +71,26 @@ const Selector: React.FC<ISelector> = ({
               : " rounded-md")
           }
         >
-          Add {selectorTitle.toLowerCase()}
+          {choiced[0] ? (
+            <div className="flex flex-wrap">
+              {choiced.map((item, index) => (
+                <h1
+                  key={index}
+                  className="bg-blue-600 m-2 p-2 rounded-md text-xs text-white"
+                >
+                  {item}
+                </h1>
+              ))}
+            </div>
+          ) : (
+            "Add " + selectorTitle.toLowerCase()
+          )}
         </button>
         {showSelector && (
-          <ul className="absolute w-full top-12 right-0 bg-opacity-80 bg-blue-500 rounded-b-md text-white h-60 overflow-y-scroll scrollbar-hide z-10">
+          <ul
+            ref={selectorRef}
+            className="absolute w-full top-12 right-0 bg-opacity-80 bg-blue-500 rounded-b-md text-white h-60 overflow-y-scroll scrollbar-hide z-10"
+          >
             {selectList.map((item, index) => {
               let styleParams = "";
               if (choiced.indexOf(item) !== -1) {
@@ -70,6 +99,7 @@ const Selector: React.FC<ISelector> = ({
               if (index !== selectList.length - 1) {
                 return (
                   <li
+                    key={index}
                     onClick={() => handleChoice(item)}
                     className={
                       "hover:bg-blue-600 p-4 cursor-pointer" + styleParams
@@ -81,6 +111,7 @@ const Selector: React.FC<ISelector> = ({
               } else {
                 return (
                   <li
+                    key={index}
                     onClick={() => handleChoice(item)}
                     className={
                       "hover:bg-blue-600 p-4 cursor-pointer rounded-b-md" +

@@ -19,6 +19,20 @@ const Navbar = () => {
             <img className="h-8" src={plusSVG} alt="error" />
             <h5 className="text-white">New subject</h5>
           </Link>
+          <Link
+            to="/create_group"
+            className="flex items-center mr-8 hover:bg-blue-400 px-2 cursor-pointer rounded-md "
+          >
+            <img className="h-8" src={plusSVG} alt="error" />
+            <h5 className="text-white">New group</h5>
+          </Link>
+          <Link
+            to="/create_student"
+            className="flex items-center mr-8 hover:bg-blue-400 px-2 cursor-pointer rounded-md "
+          >
+            <img className="h-8" src={plusSVG} alt="error" />
+            <h5 className="text-white">New student</h5>
+          </Link>
           <UserNavbar />
         </div>
       </div>
