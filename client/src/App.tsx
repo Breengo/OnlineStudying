@@ -9,7 +9,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import { RootState } from "./redux/store";
 import SubjectCreationPage from "./pages/SubjectCreationPage";
 import GroupCreationPage from "./pages/GroupCreationPage";
-import StudentCreationPage from "./pages/StudentCreationPage";
+import StudentCreationPage from "./pages/UserCreationPage";
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);

@@ -10,30 +10,39 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json(errors.array());
+        return res.status(400).json({
+          message: errors.array()[0].param + " " + errors.array()[0].msg,
+        });
       }
-      const { password, email, userName } = req.body;
+      const { password, email, userName, role, group } = req.body;
       const alreadyExisted = await UserModel.find({ email });
       if (alreadyExisted.length != 0) {
         return res.status(400).json({ message: "Email already taken" });
       }
       const passwordHash = await bcrypt.hash(password, 6);
-      const doc = new UserModel({
-        email,
-        password: passwordHash,
-        userName: userName,
-      });
+      let doc;
+      if (group) {
+        doc = new UserModel({
+          email,
+          password: passwordHash,
+          userName,
+          role,
+          group,
+        });
+      } else {
+        doc = new UserModel({
+          email,
+          password: passwordHash,
+          userName,
+          role,
+        });
+      }
 
       const user = await doc.save();
-      const token = jwt.sign(
-        {
-          _id: user._id,
-        },
-        process.env.SECRET_KEY as string
-      );
-      return res.status(200).json(token);
+      return res.status(200).json({ succes: true });
     } catch (error) {
       console.log(error);
+      return res.status(500).json({ message: "Internal error" });
     }
   }
 
@@ -52,14 +61,24 @@ class UserController {
         { _id: user[0]._id },
         process.env.SECRET_KEY as string
       );
-      return res.status(200).json(token);
+      return res.status(200).json({
+        token,
+        email: user[0].email,
+        userName: user[0].userName,
+        role: user[0].role,
+      });
     } catch (error) {
       console.log(error);
     }
   }
 
   async auth(req: ICheckAuthRequest, res: Response) {
-    return res.status(200).json(req.userId);
+    const user = await UserModel.find({ _id: req.userId });
+    return res.status(200).json({
+      email: user[0].email,
+      userName: user[0].userName,
+      role: user[0].role,
+    });
   }
 }
 

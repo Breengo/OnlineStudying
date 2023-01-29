@@ -43,6 +43,9 @@ const Selector: React.FC<ISelector> = ({
     if (choiced.indexOf(select) === -1) {
       if (!allowedNumber || allowedNumber > choiced.length) {
         setChoiced([...choiced, select]);
+        if (allowedNumber && allowedNumber > choiced.length) {
+          setShowSelector(false);
+        }
       }
     } else {
       const tempArr = choiced.slice(0);
@@ -63,6 +66,7 @@ const Selector: React.FC<ISelector> = ({
       <label className="mr-4 w-4/12">{selectorTitle}</label>
       <div className="relative w-full">
         <button
+          type="button"
           onClick={selectHandler}
           className={
             "outline-none bg-transparent border-2  w-full p-2 text-xl border-blue-600 border-2 hover:bg-blue-600 hover:text-white" +

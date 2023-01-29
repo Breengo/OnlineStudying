@@ -1,16 +1,14 @@
 import mongoose from "mongoose";
-const UserSchema = new mongoose.Schema(
+import UserModles from "./User.js";
+
+const SubjectSchema = new mongoose.Schema(
   {
     subjectName: {
       type: String,
       required: true,
     },
-    teacher: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
+    teacher: [UserModles],
+    groups: {
       type: String,
       required: true,
     },
@@ -20,4 +18,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model("Subject", SubjectSchema);

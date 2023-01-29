@@ -1,3 +1,4 @@
+import axios from "../axios";
 import React from "react";
 import Selector from "../components/Selector";
 
@@ -16,28 +17,20 @@ const teacherList: string[] = [
   "Povarnin L.T.",
 ];
 
-export const groupList: string[] = [
-  "720-1",
-  "720-2",
-  "730-1",
-  "640",
-  "750-1",
-  "750-2",
-  "750-1",
-  "650",
-  "760-1",
-  "760-2",
-  "790-1",
-  "660",
-  "770-1",
-  "770-2",
-  "780-1",
-  "670",
-];
+export interface IGroup {
+  groupNumber: string;
+}
 
 const SubjectCreationPage = () => {
   const [choicedTeacher, setChoicedTeacher] = React.useState<string[]>([]);
   const [choicedGroup, setChoicedGroup] = React.useState<string[]>([]);
+  const [groupList, setGroupList] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    axios.get("/group/getAll").then((res) => {
+      setGroupList(res.data.map((item: IGroup) => item.groupNumber));
+    });
+  }, []);
 
   return (
     <div className="w-full h-screen flex items-center justify-center font-mono">

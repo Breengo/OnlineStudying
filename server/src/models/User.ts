@@ -18,6 +18,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    group: {
+      type: String,
+    },
   },
   {
     timestamps: true,
