@@ -2,9 +2,28 @@ import React from "react";
 
 import SubjectBox from "../components/SubjectBox";
 import searchSVG from "../assets/search.svg";
+import { RootState, useAppDispatch } from "../redux/store";
+import { fetchSubject } from "../redux/thunks/fetchSubjects";
+import { useSelector } from "react-redux";
+import debounce from "../utils/debounce";
 
 const MainPage = () => {
   const [focus, setFocus] = React.useState(false);
+  const [searchText, setSearchText] = React.useState("");
+  const [subjFilter, setSubjFilter] = React.useState("");
+  const dispatch = useAppDispatch();
+  const subjects = useSelector(
+    (state: RootState) => state.subjectList.subjectList
+  );
+
+  const debSetSubjFilter = React.useCallback((value: string) => {
+    return debounce(() => setSubjFilter(value), 300);
+  }, []);
+
+  React.useEffect(() => {
+    dispatch(fetchSubject());
+  }, []);
+
   return (
     <div className="min-h-screen w-full pt-32 pb-20 px-12 font-mono">
       <div className="w-full flex justify-center">
@@ -21,6 +40,11 @@ const MainPage = () => {
           />
           <input
             placeholder="Search for subject"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setSearchText(e.target.value);
+              debSetSubjFilter(e.target.value);
+            }}
+            value={searchText}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
             className="px-4 text-xl font-semibold outline-none rounded-md h-full w-full"
@@ -29,66 +53,19 @@ const MainPage = () => {
         </div>
       </div>
       <div className="flex flex-wrap w-full items-center justify-center">
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
-        <SubjectBox />
+        {subjects &&
+          subjects
+            .filter((item) =>
+              item.subjectName.toLowerCase().includes(subjFilter.toLowerCase())
+            )
+            .map((item) => (
+              <SubjectBox
+                key={item._id}
+                teachers={item.teachers}
+                subjectName={item.subjectName}
+                groups={item.groups}
+              />
+            ))}
       </div>
     </div>
   );

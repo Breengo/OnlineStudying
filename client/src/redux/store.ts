@@ -1,10 +1,16 @@
 import isAuthSlice from "./slices/authSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
+import teachersSlice from "./thunks/fetchTeachers";
+import groupsSlice from "./thunks/fetchGroups";
+import subjectSlice from "./thunks/fetchSubjects";
 
 export const store = configureStore({
   reducer: {
     auth: isAuthSlice,
+    teacherList: teachersSlice,
+    groupList: groupsSlice,
+    subjectList: subjectSlice,
   },
 });
 

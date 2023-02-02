@@ -1,17 +1,38 @@
 import mongoose from "mongoose";
-import UserModles from "./User.js";
+import { GroupSchema } from "./Group.js";
+
+const UserSchema = new mongoose.Schema(
+  {
+    userName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+    },
+    group: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const SubjectSchema = new mongoose.Schema(
   {
     subjectName: {
       type: String,
       required: true,
+      unique: true,
     },
-    teacher: [UserModles],
-    groups: {
-      type: String,
-      required: true,
-    },
+    teachers: [UserSchema],
+    groups: [GroupSchema],
   },
   {
     timestamps: true,

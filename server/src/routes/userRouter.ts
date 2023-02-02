@@ -8,5 +8,6 @@ const router = Router();
 router.post("/create", registerValidation, UserController.create);
 router.post("/login", UserController.login);
 router.get("/auth", authMidlleware, UserController.auth);
+router.get("/getByRole", UserController.getByRole);
 
 export default router;

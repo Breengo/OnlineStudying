@@ -80,6 +80,12 @@ class UserController {
       role: user[0].role,
     });
   }
+
+  async getByRole(req: Request, res: Response) {
+    const { role } = req.query;
+    const users = await UserModel.find({ role }, "email role  userName");
+    return res.status(200).json(users);
+  }
 }
 
 export default new UserController();

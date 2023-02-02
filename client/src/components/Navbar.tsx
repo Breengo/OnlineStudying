@@ -10,7 +10,7 @@ const Navbar = () => {
   const userData = useSelector((state: RootState) => state.auth.data);
   return (
     <>
-      <div className="grid grid-cols-2 w-full pt-4 items-center bg-blue-500 pb-4 fixed top-0 font-serif select-none">
+      <div className="grid grid-cols-2 w-full pt-4 items-center bg-blue-500 pb-4 fixed top-0 font-serif select-none z-10">
         <Link to="/" className="cursor-pointer">
           <h1 className="text-5xl ml-24 text-white">University</h1>
         </Link>

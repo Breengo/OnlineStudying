@@ -3,7 +3,9 @@ import Selector from "../components/Selector";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "../axios";
 import { useNavigate } from "react-router-dom";
-import { IGroup } from "./SubjectCreationPage";
+import { RootState, useAppDispatch } from "../redux/store";
+import { fetchGroups } from "../redux/thunks/fetchGroups";
+import { useSelector } from "react-redux";
 
 const roles = ["Teacher", "Student", "Deanery"];
 
@@ -16,12 +18,13 @@ interface IFormData {
 const StudentCreationPage = () => {
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
-  const [groupList, setGroupList] = React.useState<string[]>([]);
+  const dispatch = useAppDispatch();
+  const groupList = useSelector(
+    (state: RootState) => state.groupList.groupList
+  );
 
   React.useEffect(() => {
-    axios.get("/group/getAll").then((res) => {
-      setGroupList(res.data.map((item: IGroup) => item.groupNumber));
-    });
+    dispatch(fetchGroups());
   }, []);
   const {
     register,
@@ -94,7 +97,7 @@ const StudentCreationPage = () => {
 
         {userRole[0] === "Student" && (
           <Selector
-            selectList={groupList}
+            selectList={groupList.map((item) => item.groupNumber)}
             selectorTitle={"Group"}
             setChoiced={setChoicedGroup}
             choiced={choicedGroup}
