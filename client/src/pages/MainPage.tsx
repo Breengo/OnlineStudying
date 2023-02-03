@@ -61,7 +61,8 @@ const MainPage = () => {
             .map((item) => (
               <SubjectBox
                 key={item._id}
-                teachers={item.teachers}
+                subjectId={item._id}
+                teacher={item.teacher}
                 subjectName={item.subjectName}
                 groups={item.groups}
               />

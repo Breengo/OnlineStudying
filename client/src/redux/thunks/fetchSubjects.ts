@@ -11,7 +11,7 @@ const fetchSubject = createAsyncThunk("subjects/fetchSubjects", async () => {
 interface ISubjectData {
   subjectName: string;
   groups: IGroupData[];
-  teachers: IUserData[];
+  teacher: IUserData;
   _id: string;
 }
 

@@ -24,6 +24,29 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+const ModuleItemSchema = new mongoose.Schema({
+  itemType: {
+    type: String,
+    required: true,
+  },
+  itemName: {
+    type: String,
+    required: true,
+  },
+  number: {
+    type: Number,
+    require: true,
+  },
+});
+
+const ModuleSchema = new mongoose.Schema({
+  moduleName: {
+    type: String,
+    required: true,
+  },
+  itemList: [ModuleItemSchema],
+});
+
 const SubjectSchema = new mongoose.Schema(
   {
     subjectName: {
@@ -31,8 +54,13 @@ const SubjectSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    teachers: [UserSchema],
+    teacher: UserSchema,
     groups: [GroupSchema],
+    moduleList: [ModuleSchema],
+    headerText: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

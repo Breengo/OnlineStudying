@@ -5,5 +5,6 @@ const router = Router();
 
 router.post("/create", SubjectController.create);
 router.get("/getAll", SubjectController.getAll);
+router.get("/getByID", SubjectController.getByID);
 
 export default router;

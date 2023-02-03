@@ -38,7 +38,7 @@ const SubjectCreationPage = () => {
     }
     axios
       .post("/subject/create", {
-        teachers: choicedTeacher,
+        teacher: choicedTeacher[0],
         groups: choicedGroup,
         subjectName,
       })
@@ -67,6 +67,7 @@ const SubjectCreationPage = () => {
 
         <Selector
           selectList={teacherList.map((item) => item.userName)}
+          allowedNumber={1}
           selectorTitle={"Teacher"}
           setChoiced={setChoicedTeacher}
           choiced={choicedTeacher}
