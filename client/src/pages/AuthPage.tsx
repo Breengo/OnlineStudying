@@ -1,8 +1,7 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import { useAppDispatch } from "../redux/store";
 import { login } from "../redux/slices/authSlice";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { InfinitySpin } from "react-loader-spinner";
 import axios from "../axios";
 
 interface ILoginData {
@@ -13,30 +12,11 @@ interface ILoginData {
 const AuthPage = () => {
   const dispatch = useAppDispatch();
   const [error, setError] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(true);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ILoginData>();
-
-  React.useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      axios
-        .get("/user/auth", {
-          headers: {
-            auth: token,
-          },
-        })
-        .then((res) => dispatch(login(res.data)))
-        .catch()
-        .finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
 
   const onSubmit: SubmitHandler<ILoginData> = (data: any) => {
     axios
@@ -47,15 +27,6 @@ const AuthPage = () => {
       })
       .catch((err) => setError(err.response.data.message));
   };
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-screen flex flex-col justify-center items-center">
-        <InfinitySpin width="200" color="#315dd6" />
-        <h1 className="text-3xl font-bold text-blue-500">Loading...</h1>
-      </div>
-    );
-  }
 
   return (
     <div className="flex items-center justify-center w-full h-screen font-mono">

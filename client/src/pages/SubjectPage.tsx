@@ -5,26 +5,20 @@ import NewModuleBlock from "../components/NewModuleBlock";
 import SubjectModuleBox from "../components/SubjectModuleBox";
 import SubjectPageHeader from "../components/SubjectPageHeader";
 import { InfinitySpin } from "react-loader-spinner";
-import { IUserData } from "../redux/thunks/fetchTeachers";
-
-interface ISubjectInfo {
-  createdAt: string;
-  groups: string[];
-  moduleList: string[];
-  subjectName: string;
-  headerText: string;
-  teacher: IUserData;
-}
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../redux/store";
+import { fetchSubjectInfo } from "../redux/thunks/fetchSubjectInfo";
 
 const SubjectPage = () => {
-  const [subjectInfo, setSubjectInfo] = React.useState<
-    ISubjectInfo | undefined
-  >();
+  const dispatch = useAppDispatch();
+  const subjectInfo = useSelector(
+    (state: RootState) => state.subjectInfo.subjectInfo
+  );
   const subjectID = useParams().id;
   React.useEffect(() => {
-    axios
-      .get(`/subject/getById?subjectID=${subjectID}`)
-      .then((res) => setSubjectInfo(res.data));
+    if (subjectID) {
+      dispatch(fetchSubjectInfo(subjectID));
+    }
   }, []);
 
   if (!subjectInfo) {
@@ -44,10 +38,13 @@ const SubjectPage = () => {
           headerText={subjectInfo.headerText}
           subjectName={subjectInfo.subjectName}
         />
-        <SubjectModuleBox />
-        <SubjectModuleBox />
-        <SubjectModuleBox />
-        <SubjectModuleBox />
+        {subjectInfo.moduleList.map((item, index) => (
+          <SubjectModuleBox
+            key={item.moduleName + index}
+            moduleName={item.moduleName}
+            moduleID={item._id}
+          />
+        ))}
         <NewModuleBlock />
       </div>
     </div>

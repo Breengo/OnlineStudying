@@ -1,6 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { useAppDispatch } from "./redux/store";
 import { useSelector } from "react-redux";
+import { login } from "./redux/slices/authSlice";
+import axios from "./axios";
 import Navbar from "./components/Navbar";
 import AuthPage from "./pages/AuthPage";
 import MainPage from "./pages/MainPage";
@@ -10,9 +13,35 @@ import { RootState } from "./redux/store";
 import SubjectCreationPage from "./pages/SubjectCreationPage";
 import GroupCreationPage from "./pages/GroupCreationPage";
 import StudentCreationPage from "./pages/UserCreationPage";
+import { InfinitySpin } from "react-loader-spinner";
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const dispatch = useAppDispatch();
+  const token = window.localStorage.getItem("token");
+  if (token) {
+    axios
+      .get("/user/auth", {
+        headers: {
+          auth: token,
+        },
+      })
+      .then((res) => dispatch(login(res.data)))
+      .catch()
+      .finally(() => setIsLoading(false));
+  } else {
+    setIsLoading(false);
+  }
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center">
+        <InfinitySpin width="200" color="#315dd6" />
+        <h1 className="text-3xl font-bold text-blue-500">Loading...</h1>
+      </div>
+    );
+  }
   return (
     <div className="App w-full">
       <Routes>

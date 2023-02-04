@@ -17,7 +17,6 @@ const SubjectPageHeader: React.FC<IHeaderInfo> = ({
   teacher,
 }) => {
   const [showTextarea, setShowTextarea] = React.useState(false);
-
   return (
     <header
       className={
@@ -40,7 +39,12 @@ const SubjectPageHeader: React.FC<IHeaderInfo> = ({
             <p>{headerText}</p>
           </div>
         )}
-        {showTextarea && <HeaderTextRedactor headerText={headerText} />}
+        {showTextarea && (
+          <HeaderTextRedactor
+            setShowTextarea={setShowTextarea}
+            headerText={headerText}
+          />
+        )}
         <div className="flex flex-col justify-center items-center h-full">
           <img
             className="h-20 w-20 rounded-full"

@@ -8,12 +8,14 @@ interface IUserData {
 
 interface IAuth {
   isAuth: boolean;
+  loading: boolean;
   data: IUserData | null;
 }
 
 const initialState: IAuth = {
   isAuth: false,
   data: null,
+  loading: true,
 };
 
 export const isAuthSlice = createSlice({

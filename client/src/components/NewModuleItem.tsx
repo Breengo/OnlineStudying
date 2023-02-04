@@ -15,7 +15,7 @@ const NewModuleItem = () => {
       {!showItemOptions && (
         <div
           onClick={() => setShowItemOptions(true)}
-          className="flex items-center px-8 py-2 bg-blue-200 rounded-md cursor-pointer hover:bg-blue-300 mb-4 w-full"
+          className="flex items-center px-8 py-2 bg-green-400 rounded-md cursor-pointer hover:bg-blue-300 mb-4 w-full"
         >
           <img className="h-6 mr-4" src={plusSVG} alt="error" />
           <h6 className="text-xl">New</h6>
