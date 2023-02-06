@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import teachersSlice from "./thunks/fetchTeachers";
 import groupsSlice from "./thunks/fetchGroups";
 import subjectSlice from "./thunks/fetchSubjects";
-import itemCreationWindowSlice from "./slices/itemCreationWindowSlice";
 import subjectInfoSlice from "./thunks/fetchSubjectInfo";
 
 export const store = configureStore({
@@ -13,7 +12,6 @@ export const store = configureStore({
     teacherList: teachersSlice,
     groupList: groupsSlice,
     subjectList: subjectSlice,
-    shownCreationWindow: itemCreationWindowSlice,
     subjectInfo: subjectInfoSlice,
   },
 });

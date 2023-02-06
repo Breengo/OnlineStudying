@@ -1,26 +1,29 @@
-import { useAppDispatch } from "../redux/store";
-import { setShownWindow } from "../redux/slices/itemCreationWindowSlice";
+import { ShownWindowType } from "./SubjectModuleBox";
 
 interface IModuleSelect {
   icon: string;
   type: string;
+  setShownWindow: (window: ShownWindowType) => void;
 }
 
-const NewModuleSelect: React.FC<IModuleSelect> = ({ icon, type }) => {
-  const dispatch = useAppDispatch();
+const NewModuleSelect: React.FC<IModuleSelect> = ({
+  icon,
+  type,
+  setShownWindow,
+}) => {
   const clickHandler = () => {
     switch (type) {
       case "document":
-        dispatch(setShownWindow("Doc"));
+        setShownWindow("Doc");
         break;
-      case "folder":
-        dispatch(setShownWindow("Folder"));
+      case "video":
+        setShownWindow("Video");
         break;
       case "test":
-        dispatch(setShownWindow("Test"));
+        setShownWindow("Test");
         break;
       case "discussion":
-        dispatch(setShownWindow("Discussion"));
+        setShownWindow("Discussion");
         break;
     }
   };

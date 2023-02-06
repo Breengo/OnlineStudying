@@ -4,14 +4,9 @@ import axios from "../axios";
 import WindowClose from "./WindowClose";
 import { useAppDispatch } from "../redux/store";
 import { fetchSubjectInfo } from "../redux/thunks/fetchSubjectInfo";
-import { ShownWindowType } from "./SubjectModuleBox";
+import { ICreationWindowProps } from "./DocCreationWindow";
 
-export interface ICreationWindowProps {
-  moduleID: string;
-  setShownWindow: (window: ShownWindowType) => void;
-}
-
-const DocCreationWindow: React.FC<ICreationWindowProps> = ({
+const VideoCreationWindow: React.FC<ICreationWindowProps> = ({
   moduleID,
   setShownWindow,
 }) => {
@@ -20,12 +15,11 @@ const DocCreationWindow: React.FC<ICreationWindowProps> = ({
   const [inputValue, setInputValue] = React.useState("");
   const onSaveHandler = () => {
     if (_id && inputValue != "") {
-      console.log(moduleID);
       axios
         .post("/moduleItem/createModuleItem", {
           _id,
           moduleID,
-          itemType: "document",
+          itemType: "video",
           itemName: inputValue,
         })
         .then((res) => {
@@ -77,4 +71,4 @@ const DocCreationWindow: React.FC<ICreationWindowProps> = ({
   );
 };
 
-export default DocCreationWindow;
+export default VideoCreationWindow;

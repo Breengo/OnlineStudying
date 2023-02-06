@@ -7,7 +7,10 @@ import SubjectPageHeader from "../components/SubjectPageHeader";
 import { InfinitySpin } from "react-loader-spinner";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../redux/store";
-import { fetchSubjectInfo } from "../redux/thunks/fetchSubjectInfo";
+import {
+  clearSubjectInfo,
+  fetchSubjectInfo,
+} from "../redux/thunks/fetchSubjectInfo";
 
 const SubjectPage = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +19,7 @@ const SubjectPage = () => {
   );
   const subjectID = useParams().id;
   React.useEffect(() => {
+    dispatch(clearSubjectInfo());
     if (subjectID) {
       dispatch(fetchSubjectInfo(subjectID));
     }
@@ -43,6 +47,7 @@ const SubjectPage = () => {
             key={item.moduleName + index}
             moduleName={item.moduleName}
             moduleID={item._id}
+            itemList={item.itemList}
           />
         ))}
         <NewModuleBlock />

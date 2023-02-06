@@ -1,22 +1,22 @@
 import docSVG from "../assets/doc.svg";
 import disscusionSVG from "../assets/discussion.svg";
-import folderSVG from "../assets/folder.svg";
+import videoSVG from "../assets/video.svg";
 import testSVG from "../assets/test.svg";
 import redactSVG from "../assets/redact.svg";
 
 interface IItemType {
-  type: "doc" | "folder" | "discussion" | "test";
+  type: "document" | "video" | "discussion" | "test";
   title: string;
 }
 
 const ModuleItem: React.FC<IItemType> = ({ type, title }) => {
   let icon = docSVG;
   switch (type) {
-    case "doc":
+    case "document":
       icon = docSVG;
       break;
-    case "folder":
-      icon = folderSVG;
+    case "video":
+      icon = videoSVG;
       break;
     case "test":
       icon = testSVG;

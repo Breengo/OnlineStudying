@@ -2,13 +2,22 @@ import React from "react";
 import plusSVG from "../assets/plus.svg";
 import docSVG from "../assets/doc.svg";
 import disscusionSVG from "../assets/discussion.svg";
-import folderSVG from "../assets/folder.svg";
+import videoSVG from "../assets/video.svg";
 import testSVG from "../assets/test.svg";
 import redactSVG from "../assets/redact.svg";
 import xmarkSVG from "../assets/xmark.svg";
 import NewModuleSelect from "./NewModuleSelect";
+import { ShownWindowType } from "./SubjectModuleBox";
 
-const NewModuleItem = () => {
+interface INewItemProps {
+  moduleID: string;
+  setShownWindow: (IWindow: ShownWindowType) => void;
+}
+
+const NewModuleItem: React.FC<INewItemProps> = ({
+  moduleID,
+  setShownWindow,
+}) => {
   const [showItemOptions, setShowItemOptions] = React.useState(false);
   return (
     <div className="flex w-full items-center">
@@ -30,10 +39,26 @@ const NewModuleItem = () => {
             <img className="h-6 mr-4" src={xmarkSVG} alt="error" />
             <h6 className="text-xl">Close</h6>
           </div>
-          <NewModuleSelect icon={docSVG} type={"document"} />
-          <NewModuleSelect icon={disscusionSVG} type={"discussion"} />
-          <NewModuleSelect icon={folderSVG} type={"folder"} />
-          <NewModuleSelect icon={testSVG} type={"test"} />
+          <NewModuleSelect
+            setShownWindow={setShownWindow}
+            icon={docSVG}
+            type={"document"}
+          />
+          <NewModuleSelect
+            setShownWindow={setShownWindow}
+            icon={disscusionSVG}
+            type={"discussion"}
+          />
+          <NewModuleSelect
+            setShownWindow={setShownWindow}
+            icon={videoSVG}
+            type={"video"}
+          />
+          <NewModuleSelect
+            setShownWindow={setShownWindow}
+            icon={testSVG}
+            type={"test"}
+          />
         </div>
       )}
       <div className="ml-2 pb-4">

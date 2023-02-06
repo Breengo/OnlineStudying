@@ -10,9 +10,16 @@ const fetchSubjectInfo = createAsyncThunk(
   }
 );
 
-interface IModuleInfo {
+export interface IItemInfo {
+  itemType: "document" | "video" | "discussion" | "test";
+  itemName: string;
+  _id: string;
+  number: number;
+}
+
+export interface IModuleInfo {
   moduleName: string;
-  itemList: string[];
+  itemList: IItemInfo[];
   _id: string;
 }
 

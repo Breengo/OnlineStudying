@@ -6,7 +6,6 @@ import { RootState, useAppDispatch } from "../redux/store";
 import { fetchSubject } from "../redux/thunks/fetchSubjects";
 import { useSelector } from "react-redux";
 import debounce from "../utils/debounce";
-import { clearSubjectInfo } from "../redux/thunks/fetchSubjectInfo";
 
 const MainPage = () => {
   const [focus, setFocus] = React.useState(false);
@@ -23,7 +22,6 @@ const MainPage = () => {
 
   React.useEffect(() => {
     dispatch(fetchSubject());
-    dispatch(clearSubjectInfo());
   }, []);
 
   return (

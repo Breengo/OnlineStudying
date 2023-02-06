@@ -1,10 +1,15 @@
 import xmarkSVG from "../assets/xmark.svg";
-import { setShownWindow } from "../redux/slices/itemCreationWindowSlice";
+
 import { useAppDispatch } from "../redux/store";
-const WindowClose = () => {
+import { ShownWindowType } from "./SubjectModuleBox";
+
+interface IWindowClose {
+  setShownWindow: (window: ShownWindowType) => void;
+}
+const WindowClose: React.FC<IWindowClose> = ({ setShownWindow }) => {
   const dispatch = useAppDispatch();
   const clickHandler = () => {
-    dispatch(setShownWindow(null));
+    setShownWindow(null);
   };
   return (
     <img

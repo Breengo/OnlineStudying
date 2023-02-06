@@ -9,21 +9,29 @@ import checkSVG from "../assets/check.svg";
 import DocCreationWindow from "./DocCreationWindow";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../redux/store";
-import FolderCreationWindow from "./FolderCreationWindow";
+import VideoCreationWindow from "./VideoCreationWindow";
 import TestCreationWindow from "./TestCreationWindow";
 import DiscussionCreationWindow from "./DiscussionCreationWindow";
 import axios from "../axios";
 import { useParams } from "react-router-dom";
-import { fetchSubjectInfo } from "../redux/thunks/fetchSubjectInfo";
+import { fetchSubjectInfo, IItemInfo } from "../redux/thunks/fetchSubjectInfo";
 
 interface IModuleInfo {
   moduleName: string;
   moduleID: string;
+  itemList: IItemInfo[];
 }
 
-const SubjectModuleBox: React.FC<IModuleInfo> = ({ moduleName, moduleID }) => {
+export type ShownWindowType = "Doc" | "Test" | "Discussion" | "Video" | null;
+
+const SubjectModuleBox: React.FC<IModuleInfo> = ({
+  moduleName,
+  moduleID,
+  itemList,
+}) => {
   const [updateModule, setUpdateModule] = React.useState(false);
   const [newModuleName, setNewModuleName] = React.useState(moduleName);
+  const [shownWindow, setShownWindow] = React.useState<ShownWindowType>(null);
   const _id = useParams().id;
   const dispatch = useAppDispatch();
 
@@ -53,9 +61,6 @@ const SubjectModuleBox: React.FC<IModuleInfo> = ({ moduleName, moduleID }) => {
     }
   };
 
-  const shownWindow = useSelector(
-    (state: RootState) => state.shownCreationWindow.shownWindow
-  );
   return (
     <>
       <div
@@ -87,11 +92,14 @@ const SubjectModuleBox: React.FC<IModuleInfo> = ({ moduleName, moduleID }) => {
           </div>
         )}
         <div className="flex flex-col px-4 pt-4">
-          <ModuleItem type={"discussion"} title={"Disscusion"} />
-          <ModuleItem type={"doc"} title={"Docs"} />
-          <ModuleItem type={"folder"} title={"Folder"} />
-          <ModuleItem type={"test"} title={"Test"} />
-          <NewModuleItem />
+          {itemList.map((item) => (
+            <ModuleItem
+              key={item._id}
+              type={item.itemType}
+              title={item.itemName}
+            />
+          ))}
+          <NewModuleItem setShownWindow={setShownWindow} moduleID={moduleID} />
         </div>
 
         {updateModule && (
@@ -115,10 +123,25 @@ const SubjectModuleBox: React.FC<IModuleInfo> = ({ moduleName, moduleID }) => {
           </div>
         )}
       </div>
-      {shownWindow == "Doc" && <DocCreationWindow />}
-      {shownWindow == "Folder" && <FolderCreationWindow />}
+      {shownWindow == "Doc" && (
+        <DocCreationWindow
+          setShownWindow={setShownWindow}
+          moduleID={moduleID}
+        />
+      )}
+      {shownWindow == "Video" && (
+        <VideoCreationWindow
+          setShownWindow={setShownWindow}
+          moduleID={moduleID}
+        />
+      )}
       {shownWindow == "Test" && <TestCreationWindow />}
-      {shownWindow == "Discussion" && <DiscussionCreationWindow />}
+      {shownWindow == "Discussion" && (
+        <DiscussionCreationWindow
+          setShownWindow={setShownWindow}
+          moduleID={moduleID}
+        />
+      )}
     </>
   );
 };
